@@ -1,40 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace zd1
+public class Employee
 {
-    internal class Program
+    public string Name { get; set; }
+    public DateTime? HireDate { get; set; }
+    public EmploymentStatus Status { get; set; }
+
+    public int GetYearsWorked()
     {
-        static void Main(string[] args)
+        if (!HireDate.HasValue)
+            return -1;
+
+        var today = DateTime.Today;
+        int years = today.Year - HireDate.Value.Year;
+        if (HireDate.Value.Date > today.AddYears(-years))
+            years--;
+
+        return years;
+    }
+    public override string ToString()
+    {
+        string statusStr = Status.ToString();
+        string hireDateStr = HireDate.HasValue ? HireDate.Value.ToShortDateString() : "не указана";
+        return $"{Name}, статус: {statusStr}, стаж: {hireDateStr}";
+    }
+}
+class Program
+{
+    static void Main()
+    {
+        var emp = new Employee
         {
-            List<string> names = new List<string>();
-            names.Add("Анна");
-            names.Add("Петр"); 
-            names.Add("Анна");
-            names.Add("Ольга");
-            names.Add("Петр");
-            names.Add("Иван");
-            Console.WriteLine("Исходный список:");
-            foreach (string name in names)
-            {
-                Console.WriteLine(name);
-            }
-            List<string> uniqueNames = new List<string>();
-            foreach (string name in names)
-            {
-                if (!uniqueNames.Contains(name))
-                {
-                    uniqueNames.Add(name);
-                }
-            }
-            Console.WriteLine("\nСписок без дубликатов:");
-            foreach (string name in uniqueNames)
-            {
-                Console.WriteLine(name);
-            }
-        }
+            Name = "Пётр",
+            HireDate = new DateTime(2020, 3, 15),
+            Status = EmploymentStatus.Active
+        };
+        Console.WriteLine(emp.GetYearsWorked());
+        emp.HireDate = null;
+        Console.WriteLine(emp.GetYearsWorked());
+        Console.WriteLine(emp);
     }
 }
