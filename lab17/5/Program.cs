@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace zd5
+namespace zd1
 {
     public enum EmploymentStatus
     {
@@ -54,3 +54,4 @@ namespace zd5
         }
     }
 }
+
